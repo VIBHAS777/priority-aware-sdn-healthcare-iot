@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Healthcare IoT SDN Stability Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Priority-Aware SDN Healthcare IoT</h1>
+        <p>Stability threshold and performance degradation analysis</p>
+      </div>
+      <div class="status" id="threshold">Loading</div>
+    </header>
+
+    <main>
+      <section class="panel controls">
+        <div class="control">
+          <label for="scenarioSelect">Scenario</label>
+          <select id="scenarioSelect">
+            <option value="baseline">Baseline</option>
+            <option value="stress">Stress</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="policySelect">Controller</label>
+          <select id="policySelect">
+            <option value="priority">Priority-aware SDN</option>
+            <option value="fifo">FIFO baseline</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="seedInput">Seed</label>
+          <input id="seedInput" type="number" min="1" max="9999" value="7">
+        </div>
+        <div class="control">
+          <label for="durationInput">Duration per load</label>
+          <input id="durationInput" type="number" min="5" max="90" value="16">
+        </div>
+        <div class="control" style="align-items: center; flex-direction: row; display: flex; gap: 8px; margin-top: 24px;">
+          <input type="checkbox" id="useRLCheckbox">
+          <label for="useRLCheckbox" style="margin-bottom: 0;">Use Adaptive RL</label>
+        </div>
+        <button id="runButton" type="button">Run experiment</button>
+        <span id="runStatus" class="run-status">Ready</span>
+      </section>
+
+      <section class="panel integrations" style="display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+        <div>
+          <h2 style="margin: 0 0 4px 0;">Advanced Integrations</h2>
+          <p style="margin: 0; color: #778390; font-size: 13px;">Manage Docker Emulation and Real-time Sensors</p>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button id="btnDockerStart" type="button" style="background: rgba(6,182,212,0.2); border-color: rgba(6,182,212,0.5);">Start Docker Emulation</button>
+          <button id="btnDockerStop" type="button" style="background: rgba(225,29,72,0.2); border-color: rgba(225,29,72,0.5);">Stop Docker</button>
+          <button id="btnSensorStart" type="button" style="background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.5);">Start Live Sensor Stream</button>
+        </div>
+      </section>
+
+      <section class="panel terminal-panel">
+        <div class="panel-head">
+          <h2>Live Medical Sensor Feed (MQTT)</h2>
+        </div>
+        <div id="sensorTerminal" class="sensor-terminal">
+          <div class="term-line" style="color: #778390;">> Waiting for sensor stream to begin...</div>
+        </div>
+      </section>
+
+      <section class="metrics" id="metrics"></section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>QoS Degradation by Load</h2>
+          <select id="metricSelect" aria-label="Metric">
+            <option value="p95_latency_ms">P95 latency</option>
+            <option value="loss_pct">Loss and deadline miss rate</option>
+            <option value="jitter_ms">Jitter</option>
+            <option value="delivery_ratio">Delivery ratio</option>
+          </select>
+        </div>
+        <canvas id="chart" width="1100" height="430"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>SDN Fabric State</h2>
+          <div class="fabric-tools">
+            <select id="loadSelect" aria-label="Load point"></select>
+            <select id="packetClassSelect" aria-label="Packet class">
+              <option value="all">All packets</option>
+              <option value="emergency">Emergency only</option>
+              <option value="critical">Critical only</option>
+              <option value="clinical">Clinical only</option>
+              <option value="routine">Routine only</option>
+            </select>
+            <button id="playButton" type="button">Pause packets</button>
+            <label class="speed-control" for="speedRange">
+              Speed
+              <input id="speedRange" type="range" min="0.5" max="3" step="0.25" value="1.25">
+            </label>
+          </div>
+        </div>
+        <canvas id="topology" width="1100" height="500"></canvas>
+        <div class="legend">
+          <span><i class="emergency-dot"></i>Emergency</span>
+          <span><i class="critical-dot"></i>Critical</span>
+          <span><i class="clinical-dot"></i>Clinical</span>
+          <span><i class="routine-dot"></i>Routine</span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Priority SDN vs FIFO Baseline</h2>
+          <button id="compareButton" type="button">Load comparison</button>
+        </div>
+        <div class="comparison" id="comparison"></div>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Dominant Flow Paths</h2>
+          <div id="paths"></div>
+        </article>
+        <article class="panel">
+          <h2>Installed Flow Rules</h2>
+          <div id="rules"></div>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>Congested Links</h2>
+          <div id="hotLinks"></div>
+        </article>
+        <article class="panel">
+          <h2>Generated Experiment Plots</h2>
+          <div class="plots">
+            <a href="/results/latency_degradation.svg">Latency SVG</a>
+            <a href="/results/loss_degradation.svg">Loss SVG</a>
+            <a href="/results/stability_threshold.svg">Threshold SVG</a>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+{
+  "flow_rules": [
+    {
+      "source": "icu",
+      "destination": "ehr-server",
+      "class": "critical",
+      "path": [
+        "icu",
+        "edge-2",
+        "core-1",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=icu,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-2->core-1->ehr-server"
+    },
+    {
+      "source": "icu",
+      "destination": "ehr-server",
+      "class": "emergency",
+      "path": [
+        "icu",
+        "edge-2",
+        "core-1",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=icu,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-2->core-1->ehr-server"
+    },
+    {
+      "source": "lab",
+      "destination": "ehr-server",
+      "class": "clinical",
+      "path": [
+        "lab",
+        "edge-2",
+        "core-2",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=lab,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-2->core-2->ehr-server"
+    },
+    {
+      "source": "lab",
+      "destination": "ehr-server",
+      "class": "routine",
+      "path": [
+        "lab",
+        "edge-2",
+        "core-1",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=lab,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-2->core-1->ehr-server"
+    },
+    {
+      "source": "ward-a",
+      "destination": "ehr-server",
+      "class": "clinical",
+      "path": [
+        "ward-a",
+        "edge-1",
+        "core-2",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=ward-a,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-1->core-2->ehr-server"
+    },
+    {
+      "source": "ward-a",
+      "destination": "ehr-server",
+      "class": "critical",
+      "path": [
+        "ward-a",
+        "edge-1",
+        "core-2",
+        "controller",
+        "core-1",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=ward-a,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-1->core-2->controller->core-1->ehr-server"
+    },
+    {
+      "source": "ward-a",
+      "destination": "ehr-server",
+      "class": "emergency",
+      "path": [
+        "ward-a",
+        "edge-1",
+        "core-2",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=ward-a,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-1->core-2->ehr-server"
+    },
+    {
+      "source": "ward-a",
+      "destination": "ehr-server",
+      "class": "routine",
+      "path": [
+        "ward-a",
+        "edge-1",
+        "core-2",
+        "controller",
+        "core-1",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=ward-a,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-1->core-2->controller->core-1->ehr-server"
+    },
+    {
+      "source": "ward-b",
+      "destination": "ehr-server",
+      "class": "clinical",
+      "path": [
+        "ward-b",
+        "edge-1",
+        "core-2",
+        "controller",
+        "core-1",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=ward-b,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-1->core-2->controller->core-1->ehr-server"
+    },
+    {
+      "source": "ward-b",
+      "destination": "ehr-server",
+      "class": "routine",
+      "path": [
+        "ward-b",
+        "edge-1",
+        "core-2",
+        "ehr-server"
+      ],
+      "match": "cookie=0x0, table=0, priority=100, ip,nw_src=ward-b,nw_dst=ehr-server",
+      "action": "actions=set_queue:0,output:port_for_edge-1->core-2->ehr-server"
+    }
+  ]
+}

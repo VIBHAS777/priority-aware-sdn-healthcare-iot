@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: sdn_mqtt_broker
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+
+  ryu-controller:
+    image: osrg/ryu:latest
+    container_name: sdn_ryu_controller
+    command: ryu-manager ryu.app.ofctl_rest ryu.app.simple_switch_13
+    ports:
+      - "6653:6653"  # OpenFlow
+      - "8081:8080"  # REST API (Mapped to 8081 to avoid dashboard conflict)
+    restart: unless-stopped

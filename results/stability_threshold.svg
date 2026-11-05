@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="360" viewBox="0 0 920 360">
+<style>
+svg { background: #fbfcfd; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.title { font-size: 22px; font-weight: 700; fill: #1b2733; }
+.axis { stroke: #778390; stroke-width: 1.2; }
+.grid { stroke: #d8dee6; stroke-width: 0.8; }
+.line { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.threshold { stroke: #111827; stroke-width: 2; stroke-dasharray: 7 5; }
+.label { font-size: 13px; fill: #344054; }
+</style>
+<text x="32" y="38" class="title">Weighted Performance Degradation Index</text>
+<line x1="64" y1="296" x2="856" y2="296" class="axis"/>
+<line x1="64" y1="64" x2="64" y2="296" class="axis"/>
+<text x="424.0" y="342" class="label">offered load multiplier</text>
+<text x="18" y="180.0" class="label" transform="rotate(-90 18 180.0)">degradation index</text>
+<line x1="64" y1="64" x2="856" y2="64" class="grid"/>
+<line x1="64" y1="180.0" x2="856" y2="180.0" class="grid"/>
+<polyline class="line" stroke="#7a3db8" points="64.0,278.8 116.8,252.3 169.6,255.4 222.4,239.9 275.2,224.7 328.0,223.6 380.8,209.3 433.6,203.2 486.4,182.0 539.2,175.9 592.0,169.0 644.8,142.1 697.6,117.4 750.4,106.4 803.2,85.1 856.0,93.2"/>
+<line x1="116.8" y1="64" x2="116.8" y2="296" class="threshold"/>
+<text x="124.8" y="286" class="label">unstable from 0.7x load</text>
+</svg>
